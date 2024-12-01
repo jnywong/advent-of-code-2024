@@ -1,7 +1,7 @@
 import io
 
-list1=[]
-list2=[]
+list1 = []
+list2 = []
 
 with io.open("input.txt", "r") as file:
     for line in file:
@@ -14,7 +14,7 @@ with io.open("input.txt", "r") as file:
 list1.sort()
 list2.sort()
 
-diff = [abs(x-y) for x, y in zip(list1, list2)]
+diff = [abs(x - y) for x, y in zip(list1, list2)]
 
 result = sum(diff)
 
