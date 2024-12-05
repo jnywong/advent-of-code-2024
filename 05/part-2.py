@@ -5,7 +5,6 @@ def get_lookup(data, unique, lookup):
 
 
 def bubble_sort(arr, unique, reverse_lookup):
-    # arr = [int(a) for a in arr]
     for n in range(len(arr) - 1, 0, -1):
         for i in range(n):
             l_rev = get_lookup(arr[i], unique, reverse_lookup)
