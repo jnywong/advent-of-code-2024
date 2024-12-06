@@ -25,10 +25,8 @@ while 0 <= position[0] < len(data) and 0 <= position[1] < len(data):
     if position in obstruction:
         i += 1
         d = direction[i % len(direction)]
-        print(f"bump! direction:{d}")
         position = path[-1]
     else:
-        print(f"{position} added")
         path.append(position)
 
 unique = [list(p) for p in set(tuple(p) for p in path)]
