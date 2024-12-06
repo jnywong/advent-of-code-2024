@@ -1,5 +1,3 @@
-import itertools
-
 data = []
 with open("input.txt", "r") as file:
     for line in file:
