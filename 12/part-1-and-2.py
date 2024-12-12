@@ -8,8 +8,8 @@ def encode(letter):
 
 def get_perimeter(region, label):
     perimeter = 0
-    for t in region.coords:
-        i, j = t
+    for c in region.coords:
+        i, j = c
         neighbours = [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)]
         for n in neighbours:
             if (
@@ -18,6 +18,65 @@ def get_perimeter(region, label):
             ):
                 perimeter += 1
     return perimeter
+
+
+def get_side(region, label):
+    side = 0
+    for c in region.coords:
+        n = label.shape[0]
+        i, j = c
+        # Exterior corners
+        side += (
+            1
+            if label[i - 1][j] != label[i][j] and label[i][j - 1] != label[i][j]
+            else 0
+        )
+        side += (
+            1
+            if label[i - 1][j] != label[i][j] and label[i][(j + 1) % n] != label[i][j]
+            else 0
+        )
+        side += (
+            1
+            if label[(i + 1) % n][j] != label[i][j] and label[i][j - 1] != label[i][j]
+            else 0
+        )
+        side += (
+            1
+            if label[(i + 1) % n][j] != label[i][j]
+            and label[i][(j + 1) % n] != label[i][j]
+            else 0
+        )
+        # Interior corners
+        side += (
+            1
+            if label[i - 1][j] == label[i][j]
+            and label[i][j - 1] == label[i][j]
+            and label[i][j] != label[i - 1][j - 1]
+            else 0
+        )
+        side += (
+            1
+            if label[i - 1][j] == label[i][j]
+            and label[i][(j + 1) % n] == label[i][j]
+            and label[i][j] != label[i - 1][(j + 1) % n]
+            else 0
+        )
+        side += (
+            1
+            if label[(i + 1) % n][j] == label[i][j]
+            and label[i][j - 1] == label[i][j]
+            and label[i][j] != label[(i + 1) % n][j - 1]
+            else 0
+        )
+        side += (
+            1
+            if label[(i + 1) % n][j] == label[i][j]
+            and label[i][(j + 1) % n] == label[i][j]
+            and label[i][j] != label[(i + 1) % n][(j + 1) % n]
+            else 0
+        )
+    return side
 
 
 data = []
@@ -32,5 +91,9 @@ properties = skimage.measure.regionprops(label)
 area = [p.area for p in properties]
 
 perimeter = [get_perimeter(p, label) for p in properties]
-result = sum([a * p for a, p in zip(area, perimeter)])
-print(int(result))
+side = [get_side(p, label) for p in properties]
+
+r1 = sum([a * p for a, p in zip(area, perimeter)])
+r2 = sum([a * s for a, s in zip(area, side)])
+print(int(r1))
+print(int(r2))
