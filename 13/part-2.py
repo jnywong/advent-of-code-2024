@@ -1,43 +1,40 @@
-class ClawGame:
-    def __init__(self, game_str: str):
-        game_lines = [line.split(",") for line in game_str.split("\n")]
-        self.x1, self.y1 = int(game_lines[0][0].split("+")[-1]), int(
-            game_lines[0][1].split("+")[-1]
-        )
-        self.x2, self.y2 = int(game_lines[1][0].split("+")[-1]), int(
-            game_lines[1][1].split("+")[-1]
-        )
-        self.x_p, self.y_p = int(game_lines[2][0].split("=")[-1]), int(
-            game_lines[2][1].split("=")[-1]
-        )
-        self.d = self.x1 * self.y2 - self.x2 * self.y1
-        self.a_num = self.x_p * self.y2 - self.y_p * self.x2
-        self.b_num = self.x_p * self.y1 - self.y_p * self.x1
+import re
+import math
 
-    def solve(self, w_error: bool = False) -> int:
-        a_num, b_num = int(self.a_num), int(self.b_num)
-        if w_error:
-            a_num += 10000000000000 * (self.y2 - self.x2)
-            b_num += 10000000000000 * (self.y1 - self.x1)
-        if any([self.d == 0, a_num % self.d != 0, b_num % self.d != 0]):
-            return 0
-        a, b = a_num // self.d, -b_num // self.d
-        if w_error:
-            return 3 * a + b
+
+def determinant(a, b, c, d):
+    return a * d - b * c
+
+
+data = []
+with open("input.txt", "r") as file:
+    for line in file:
+        line = line.split()
+        if line == []:
+            continue
         else:
-            return 3 * a + b if max(a, b) <= 100 else 0
+            data.append(line)
 
+A = []
+b = []
+for i in range(len(data) // 3):
+    A1 = int(re.findall(r"\d+", data[3 * i][2])[0])
+    A2 = int(re.findall(r"\d+", data[3 * i + 1][2])[0])
+    A3 = int(re.findall(r"\d+", data[3 * i][3])[0])
+    A4 = int(re.findall(r"\d+", data[3 * i + 1][3])[0])
+    A.append([[A1, A2], [A3, A4]])
 
-def load_games(game_fp: str) -> list[str]:
-    return open(game_fp).read().split("\n\n")
+    b1 = int(re.findall(r"\d+", data[3 * i + 2][1])[0]) + 10000000000000
+    b2 = int(re.findall(r"\d+", data[3 * i + 2][2])[0]) + 10000000000000
+    b.append([b1, b2])
 
+press = []
+for A_, b_ in zip(A, b):
+    d = determinant(A_[0][0], A_[0][1], A_[1][0], A_[1][1])
+    x1 = determinant(b_[0], A_[0][1], b_[1], A_[1][1]) / d
+    x2 = determinant(A_[0][0], b_[0], A_[1][0], b_[1]) / d
+    if all([x % 1 == 0 for x in (x1, x2)]):
+        press.append([x1, x2])
 
-# Test
-# test_games_strings = load_games("input.txt")
-# test_games: list[ClawGame] = [ClawGame(game_str) for game_str in test_games_strings]
-# assert sum([g.solve() for g in test_games]) == 480
-
-# Main
-games = [ClawGame(game_str) for game_str in load_games("input.txt")]
-print(f"Part 1: {sum([g.solve() for g in games])}")
-print(f"Part 2: {sum([g.solve(w_error=True) for g in games])}")
+tokens = sum([int(press[i][0] * 3 + press[i][1]) for i in range(len(press))])
+print(f"{tokens = }")
