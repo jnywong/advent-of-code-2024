@@ -47,10 +47,8 @@ for i in range(nrow):
     for j in range(ncol):
         if data[i][j] == "S":
             rstart = (i, j)
-            # nodes.append((i, j))
         elif data[i][j] == "E":
             rend = (i, j)
-            # nodes.append((i, j))
         elif data[i][j] == ".":
             nodes.append((i, j))
 
