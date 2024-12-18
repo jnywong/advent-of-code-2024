@@ -1,3 +1,4 @@
+import re
 import heapq
 import sys
 
@@ -19,13 +20,13 @@ def dijkstra(data, r, d):
         for next_dir in direction:
             if (row, col, next_dir) not in distance or distance[
                 (row, col, next_dir)
-            ] > dist + 1000:
-                distance[(row, col, next_dir)] = dist + 1000
-                heapq.heappush(priority_queue, (dist + 1000, row, col, next_dir))
+            ] > dist:
+                distance[(row, col, next_dir)] = dist
+                heapq.heappush(priority_queue, (dist, row, col, next_dir))
         next_row, next_col = row + d[0], col + d[1]
         if (
-            0 <= next_row < nrow
-            and 0 <= next_col < ncol
+            0 <= next_row < n
+            and 0 <= next_col < n
             and data[next_row][next_col] != "#"
             and (
                 (next_row, next_col, d) not in distance
@@ -39,21 +40,22 @@ def dijkstra(data, r, d):
 
 data = []
 with open("input.txt", "r") as f:
-    data = [line.strip() for line in f]
+    data = [re.findall(r"\d+", line.strip()) for line in f]
 
-nrow, ncol = len(data), len(data[0])
-nodes = []
-for i in range(nrow):
-    for j in range(ncol):
-        if data[i][j] == "S":
-            rstart = (i, j)
-        elif data[i][j] == "E":
-            rend = (i, j)
-        elif data[i][j] == ".":
-            nodes.append((i, j))
+data = [(int(d[0]), int(d[1])) for d in data]
 
-distance = dijkstra(data, rstart, (0, 1))
+n = 71
+grid = [["." for _ in range(n)] for _ in range(n)]
 
-print(
-    min([distance[(rend[0], rend[1], d)] for d in [(0, 1), (-1, 0), (0, -1), (1, 0)]])
-)
+rstart = (0, 0)
+rend = (70, 70)
+
+for d in data:
+    grid[d[0]][d[1]] = "#"
+    distance = dijkstra(grid, rstart, (0, 1))
+    if all(
+        (rend[0], rend[1], d) not in distance
+        for d in [(0, 1), (-1, 0), (0, -1), (1, 0)]
+    ):
+        print(f"Blocked: {d}")
+        break
