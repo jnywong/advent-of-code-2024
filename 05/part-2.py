@@ -1,7 +1,7 @@
 def get_lookup(data, unique, lookup):
     index = unique.index(data)
-    l = lookup[index]
-    return l
+    var = lookup[index]
+    return var
 
 
 def bubble_sort(arr, unique, reverse_lookup):
@@ -35,8 +35,8 @@ for i in range(len(unique)):
 middle = []
 for d in data:
     for i in range(len(d) - 1):
-        l = get_lookup(d[i + 1], unique, lookup)
-        if any(x in l for x in d[: i + 1]):
+        var = get_lookup(d[i + 1], unique, lookup)
+        if any(x in var for x in d[: i + 1]):
             d = bubble_sort(d, unique, reverse_lookup)
             flag = True
             break

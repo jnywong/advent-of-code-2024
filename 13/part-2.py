@@ -1,5 +1,4 @@
 import re
-import math
 
 
 def determinant(a, b, c, d):
@@ -37,4 +36,4 @@ for A_, b_ in zip(A, b):
         press.append([x1, x2])
 
 tokens = sum([int(press[i][0] * 3 + press[i][1]) for i in range(len(press))])
-print(f"{tokens = }")
+print(f"{tokens=}")

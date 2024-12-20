@@ -12,7 +12,7 @@ split_do.append(
 
 matches = []
 for s in split_do:
-    matches.append(re.findall("mul\((\d+),(\d+)\)", s))
+    matches.append(re.findall(r"mul\((\d+),(\d+)\)", s))
 
 result = sum([int(val[0]) * int(val[1]) for match in matches for val in match])
 print(result)

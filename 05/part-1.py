@@ -17,8 +17,8 @@ middle = []
 for d in data:
     for i in range(len(d) - 1):
         index = unique.index(d[i + 1])
-        l = lookup[index]
-        if any(x in l for x in d[: i + 1]):
+        var = lookup[index]
+        if any(x in var for x in d[: i + 1]):
             flag = False
             break
         else:

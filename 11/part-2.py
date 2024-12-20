@@ -8,13 +8,15 @@ def count(d, b=75):
     if d == 0:
         return count(1, b - 1)
 
-    l = len(str(d))
-    if l % 2:
+    length = len(str(d))
+    if length % 2:
         return count(d * 2024, b - 1)
 
-    print(d // 10 ** (l // 2))
+    print(d // 10 ** (length // 2))
 
-    return count(d // 10 ** (l // 2), b - 1) + count(d % 10 ** (l // 2), b - 1)
+    return count(d // 10 ** (length // 2), b - 1) + count(
+        d % 10 ** (length // 2), b - 1
+    )
 
 
 data = []

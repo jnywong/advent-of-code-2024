@@ -83,7 +83,7 @@ data = []
 with open("input.txt") as file:
     for line in file:
         line = line.split()
-        data.append([encode(l) for l in line[0]])
+        data.append([encode(char) for char in line[0]])
 
 arr = np.array(data)
 label, n = skimage.measure.label(arr, return_num=True, connectivity=1)
