@@ -32,26 +32,21 @@ output = dict()
 priority_queue = []
 for c in connection:
     if c[3].startswith("z"):
-        # Add z outputs to priority queue with priority 100
         heapq.heappush(priority_queue, (100, c))
 
 while priority_queue:
     priority, c = heapq.heappop(priority_queue)
 
-    # Check if we can evaluate this connection
     wire1_ready = c[0] in initial or c[0] in output
     wire2_ready = c[2] in initial or c[2] in output
 
     if wire1_ready and wire2_ready:
-        # Get wire values
         wire1_val = initial[c[0]] if c[0] in initial else output[c[0]]
         wire2_val = initial[c[2]] if c[2] in initial else output[c[2]]
 
-        # Evaluate and store result
         output[c[3]] = evaluate(wire1_val, wire2_val, c[1])
         priority += 1
     else:
-        # Re-add to queue with increased priority if dependencies not ready
         flag1, flag2 = False, False
         priority -= 1
         for conn in connection:
