@@ -59,7 +59,7 @@ while priority_queue:
             elif flag1 and flag2:
                 heapq.heappush(priority_queue, (priority, c))
                 break
-            heapq.heappush(priority_queue, (priority, c))
+        heapq.heappush(priority_queue, (priority, c))
 
 z_values = {k: v for k, v in sorted(output.items()) if k.startswith("z")}
 binary = "0b"
